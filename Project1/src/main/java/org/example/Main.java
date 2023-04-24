@@ -4,16 +4,38 @@ package org.example;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        String sorting = args[0];
+        if(sorting == null) {
+            System.out.println("Nso argument");
+            return;
+        }
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        Mage[] mage = new Mage[10];
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+        mage[0] = new Mage("Severus", 38, 4.0, sorting);
+        mage[1] = new Mage("Merlin", 50, 5.0, sorting);
+        mage[2] = new Mage("Dumbledore", 60, 8.0, sorting);
+        mage[3] = new Mage("Gandalf", 70, 10.5, sorting);
+        mage[4] = new Mage("Saruman", 65, 9.5, sorting);
+        mage[5] = new Mage("Morgana", 45, 4.5, sorting);
+        mage[6] = new Mage("Voldemort", 55, 7.5, sorting);
+        mage[7] = new Mage("Grindelwald", 40, 3.0, sorting);
+        mage[8] = new Mage("Gellert", 30, 2.0, sorting);
+        mage[9] = new Mage("Bellatrix", 35, 3.5, sorting);
+
+        mage[2].AddApprentice(mage[0]);
+        mage[6].AddApprentice(mage[7]);
+        mage[6].AddApprentice(mage[9]);
+        mage[6].AddApprentice(mage[8]);
+        mage[8].AddApprentice(mage[4]);
+        mage[4].AddApprentice(mage[3]);
+        mage[4].AddApprentice(mage[1]);
+
+
+    }
+
+    public void PrintApprentices(Mage mage) {
+        for(Mage m : mage.GetApprentices()) {
         }
     }
 }

@@ -1,7 +1,9 @@
 package org.example;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Mage implements Comparable{
     private String name;
@@ -9,6 +11,23 @@ public class Mage implements Comparable{
     private double power;
     private Set<Mage> apprentices;
     private String compareOptions = "natural";
+
+    public Mage(String name, int level, double power, String compareOptions) {
+        this.name = name;
+        this.level = level;
+        this.power = power;
+        this.compareOptions = compareOptions;
+
+        if(compareOptions == "natural" || compareOptions == "alternative") {
+            this.apprentices = new TreeSet<>();
+        } else {
+            this.apprentices = new HashSet<>();
+        }
+    }
+
+    public void AddApprentice(Mage apprentice) {
+        this.apprentices.add(apprentice);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -64,5 +83,34 @@ public class Mage implements Comparable{
                 }
             }
         }
+        else if(Objects.equals(compareOptions, "alternative")) {
+            if(this.level > other.level) {
+                return 1;
+            } else if(this.level < other.level) {
+                return -1;
+            } else {
+                if(this.name.length() > other.name.length()) {
+                    return 1;
+                } else if(this.name.length() < other.name.length()) {
+                    return -1;
+                } else {
+                    if(this.power > other.power) {
+                        return 1;
+                    } else if(this.power < other.power) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            }
+        }
+        else {
+            //"no sorting"
+           return 0;
+        }
+    }
+
+    public Mage[] GetApprentices() {
+        
     }
 }
