@@ -1,12 +1,10 @@
 package org.example;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
-public class Mage implements Comparable{
-    private String name;
+public class Mage implements Comparable {
+
+    private final String name;
     private int level;
     private double power;
     private Set<Mage> apprentices;
@@ -18,11 +16,16 @@ public class Mage implements Comparable{
         this.power = power;
         this.compareOptions = compareOptions;
 
-        if(compareOptions == "natural" || compareOptions == "alternative") {
+        if(Objects.equals(compareOptions, "natural")
+                || Objects.equals(compareOptions, "alternative")) {
             this.apprentices = new TreeSet<>();
         } else {
             this.apprentices = new HashSet<>();
         }
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void AddApprentice(Mage apprentice) {
@@ -57,60 +60,38 @@ public class Mage implements Comparable{
 
     @Override
     public int compareTo(Object o) {
-        if (o == this)
-            return 0;
-        if (!(o instanceof Mage))
-            return -1;
-        Mage other = (Mage)o;
-        if(Objects.equals(compareOptions, "natural")) {
-            if(this.name.length() > other.name.length()) {
-                return 1;
-            } else if(this.name.length() < other.name.length()) {
-                return -1;
-            } else {
-                if(this.level > other.level) {
-                    return 1;
-                } else if(this.level < other.level) {
-                    return -1;
-                } else {
-                    if(this.power > other.power) {
-                        return 1;
-                    } else if(this.power < other.power) {
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                }
-            }
+
+    }
+
+    public Set<Mage> GetApprentices() {
+        Set<Mage> apprenticesCopy;
+        if(compareOptions == "natural" || compareOptions == "alternative") {
+            apprenticesCopy = new TreeSet<>();
+        } else {
+            apprenticesCopy = new HashSet<>();
         }
-        else if(Objects.equals(compareOptions, "alternative")) {
-            if(this.level > other.level) {
-                return 1;
-            } else if(this.level < other.level) {
-                return -1;
-            } else {
-                if(this.name.length() > other.name.length()) {
-                    return 1;
-                } else if(this.name.length() < other.name.length()) {
-                    return -1;
-                } else {
-                    if(this.power > other.power) {
-                        return 1;
-                    } else if(this.power < other.power) {
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                }
-            }
-        }
-        else {
-            //"no sorting"
-           return 0;
+
+        apprenticesCopy.addAll(apprentices);
+        return apprenticesCopy;
+    }
+
+    public void PrintApprentices(String indent) {
+        System.out.println(indent + this.getName() + " { level=" + this.level
+                + " power=" + this.power + " }");
+        for(Mage m : apprentices) {
+            m.PrintApprentices(indent + "-");
         }
     }
 
-    public Mage[] GetApprentices() {
-        
+    public int getLevel() {
+        return level;
+    }
+
+    public double getPower() {
+        return power;
+    }
+
+    public String getCompareOptions() {
+        return compareOptions;
     }
 }
