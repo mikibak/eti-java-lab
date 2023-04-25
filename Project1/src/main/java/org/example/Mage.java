@@ -9,6 +9,7 @@ public class Mage implements Comparable {
     private double power;
     private Set<Mage> apprentices;
     private String compareOptions = "natural";
+    private Comparator comparator;
 
     public Mage(String name, int level, double power, String compareOptions) {
         this.name = name;
@@ -16,9 +17,13 @@ public class Mage implements Comparable {
         this.power = power;
         this.compareOptions = compareOptions;
 
-        if(Objects.equals(compareOptions, "natural")
-                || Objects.equals(compareOptions, "alternative")) {
+        if(Objects.equals(compareOptions, "natural")) {
             this.apprentices = new TreeSet<>();
+            this.comparator = new NaturalComparator();
+        }
+        else if(Objects.equals(compareOptions, "alternative")) {
+            this.apprentices = new TreeSet<>();
+            this.comparator = new AltComparator();
         } else {
             this.apprentices = new HashSet<>();
         }
@@ -58,9 +63,13 @@ public class Mage implements Comparable {
         return result;
     }
 
+    public String toString() {
+        return this.getName() + " { level=" + this.level
+                + " power=" + this.power + " }";
+    }
     @Override
     public int compareTo(Object o) {
-
+        return comparator.compare((Object)this, o);
     }
 
     public Set<Mage> GetApprentices() {
@@ -76,8 +85,7 @@ public class Mage implements Comparable {
     }
 
     public void PrintApprentices(String indent) {
-        System.out.println(indent + this.getName() + " { level=" + this.level
-                + " power=" + this.power + " }");
+        System.out.println(indent + this.toString());
         for(Mage m : apprentices) {
             m.PrintApprentices(indent + "-");
         }
@@ -93,5 +101,14 @@ public class Mage implements Comparable {
 
     public String getCompareOptions() {
         return compareOptions;
+    }
+
+    public int countApprentices() {
+        int apprenticesNumber = 0;
+        for(Mage m : apprentices) {
+            apprenticesNumber ++;
+            apprenticesNumber += m.countApprentices();
+        }
+        return  apprenticesNumber;
     }
 }

@@ -17,9 +17,9 @@ public class AltComparator implements Comparator {
         } else if(thisMage.getLevel() < other.getLevel()) {
             return -1;
         } else {
-            if(thisMage.getName().length() > other.getName().length()) {
+            if(thisMage.getName().compareTo(other.getName()) > 0) {
                 return 1;
-            } else if(thisMage.getName().length() < other.getName().length()) {
+            } else if(thisMage.getName().compareTo(other.getName()) < 0) {
                 return -1;
             } else {
                 if(thisMage.getPower() > other.getPower()) {

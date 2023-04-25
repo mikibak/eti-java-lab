@@ -12,9 +12,9 @@ public class NaturalComparator implements Comparator {
             return 0;
         Mage thisMage = (Mage)o1;
         Mage other = (Mage)o2;
-        if(thisMage.getName().length() > other.getName().length()) {
+        if(thisMage.getName().compareTo(other.getName()) > 0) {
             return 1;
-        } else if(thisMage.getName().length() < other.getName().length()) {
+        } else if(thisMage.getName().compareTo(other.getName()) < 0) {
             return -1;
         } else {
             if(thisMage.getLevel() > other.getLevel()) {
@@ -31,32 +31,5 @@ public class NaturalComparator implements Comparator {
                 }
             }
         }
-
-        else if(Objects.equals(compareOptions, "alternative")) {
-            if(thisMage.level > other.level) {
-                return 1;
-            } else if(thisMage.level < other.level) {
-                return -1;
-            } else {
-                if(thisMage.name.length() > other.name.length()) {
-                    return 1;
-                } else if(thisMage.name.length() < other.name.length()) {
-                    return -1;
-                } else {
-                    if(thisMage.power > other.power) {
-                        return 1;
-                    } else if(thisMage.power < other.power) {
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                }
-            }
-        }
-        else {
-            //"no sorting"
-            return 0;
-        }
     }
-
 }
