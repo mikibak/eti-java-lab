@@ -10,7 +10,8 @@ public class DivisorTask implements Task{
         this.divisor = divisor;
     }
 
-    public boolean execute() {
+    public boolean execute() throws InterruptedException {
+        Thread.sleep(1000);
         return number % divisor == 0;
     }
 
