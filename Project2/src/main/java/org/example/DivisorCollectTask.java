@@ -1,20 +1,28 @@
 package org.example;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class DivisorCollectTask implements Task{
 
     private final long number;
-    private final long divisor;
 
-    public DivisorCollectTask(long number, long divisor) {
+    public DivisorCollectTask(long number) {
         this.number = number;
-        this.divisor = divisor;
     }
 
     public Object execute() throws InterruptedException {
-        //Thread.sleep(1000);
-        if(number % divisor == 0) {
-            return divisor;
-        } else return (long)1;
+        List<Long> list = new LinkedList<>();
+
+        for(long divisor = 1; divisor <= number; divisor++) {
+            if(number % divisor == 0) {
+                list.add(divisor);
+            };
+        }
+
+        Thread.sleep(5000);
+
+        return list;
     }
 
     @Override

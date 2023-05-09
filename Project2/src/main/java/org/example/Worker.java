@@ -17,7 +17,7 @@ public class Worker implements Runnable {
             try {
                 task = resource.take();
                 if(task != null) {
-                    results.add((Long)task.resultHash(), (Long)task.execute());
+                    results.add(task.resultHash(), task.execute());
                 }
             } catch (InterruptedException ignored) {
             } catch (IOException e) {

@@ -29,24 +29,17 @@ public class Main {
             File myObj = new File("liczby.txt");
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
+
                 String data = myReader.nextLine();
                 System.out.println(data);
-                long number;
-                try{
-                    number = Long.parseLong(data);
-                } catch (NumberFormatException n) {
-                    number = 0;
-                    System.out.println("Number too long!");
-                }
+                long number = getLongFromString(data);
 
                 if (number == 0) {
                     continue;
                 }
 
-                for(long divisor = 1; divisor <= number; divisor++) {
-                    Task task = new DivisorCollectTask(number, divisor);
-                    resource.put(task);
-                }
+                Task task = new DivisorCollectTask(number);
+                resource.put(task);
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -63,25 +56,14 @@ public class Main {
             // Reading data using readLine
             String string = reader.readLine();
 
-            // Printing the read line
-            System.out.println(string);
+            if(string == "exit") break;
 
-            long number;
-            try{
-                number = Long.parseLong(string);
-            } catch (NumberFormatException n) {
-                number = 0;
-                System.out.println("Number too long!");
-            }
+            long number = getLongFromString(string);
 
-            if (number == 0) {
-                break;
-            }
+            if (number == 0) continue;
 
-            for(long divisor = 1; divisor <= number; divisor++) {
-                Task task = new DivisorCollectTask(number, divisor);
-                resource.put(task);
-            }
+            Task task = new DivisorCollectTask(number);
+            resource.put(task);
         }
 
         try {
@@ -91,5 +73,16 @@ public class Main {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static long getLongFromString(String str) {
+        long number;
+        try{
+            number = Long.parseLong(str);
+        } catch (NumberFormatException n) {
+            number = 0;
+            System.out.println("Number too long!");
+        }
+        return number;
     }
 }

@@ -7,17 +7,20 @@ import java.util.*;
 
 public class DivisorCollectResults {
 
-    private HashMap<Long, List<Long>> divisors;
+    private final HashMap<Long, List<Long>> divisors;
     private static final Object lock = new Object();
-    private final String filename = "results.txt";
 
     public DivisorCollectResults() {
         this.divisors = new HashMap<>();
     }
 
-    public void whenAppendStringUsingBufferedWritter_thenOldContentShouldExistToo(long number, List<Long> divisors)
+    public void writeResultsToFile(Object hash, Object result)
             throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true));
+
+        long number = (Long)hash;
+        List<Long> divisors = (List<Long>)result;
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true));
         writer.append(number+": ");
 
         for(long div : divisors) {
@@ -29,24 +32,18 @@ public class DivisorCollectResults {
         writer.close();
     }
 
-    public void add(long number, long divisor) throws IOException {
+    public void add(Object objectHash, Object objectResult) throws IOException {
+        long number = (Long)objectHash;
+        List<Long> divisorList = (List<Long>)objectResult;
         synchronized (lock) {
-            if(divisors.get(number) == null) {
-                divisors.put(number, new LinkedList<>());
-                divisors.get(number).add((long)1);
-            } else if(divisor != (long)1) {
-                divisors.get(number).add(divisor);
-            }
 
-            if(divisor == number) {
-                //calculations complete
-                System.out.print("Calculations complete for number " + number);
-                System.out.println(divisors.get(number));
-                //write to file
+            divisors.put(number, divisorList);
 
-                whenAppendStringUsingBufferedWritter_thenOldContentShouldExistToo(number, divisors.get(number));
+            System.out.print("Calculations complete for number " + number);
+            System.out.println(divisors.get(number));
 
-            }
+            writeResultsToFile(number, divisors.get(number));
+
         }
     }
 
