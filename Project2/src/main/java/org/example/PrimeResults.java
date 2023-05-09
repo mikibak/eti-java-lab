@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.HashMap;
 
-public class Results {
+public class PrimeResults {
     private class Result {
         public Result(boolean isPrime) {
             this.isPrime = isPrime;
@@ -11,14 +11,14 @@ public class Results {
         public boolean isPrime;
         public int counter;
     }
-    private HashMap<Integer, Result> primes;
+    private HashMap<Long, Result> primes;
     private static final Object lock = new Object();
 
-    public Results() {
+    public PrimeResults() {
         this.primes = new HashMap<>();
     }
 
-    public void add(int number, boolean isDivisible) {
+    public void add(long number, boolean isDivisible) {
         synchronized (lock) {
             if(primes.containsKey(number) && isDivisible) {
                 Result result = primes.get(number);
@@ -47,7 +47,7 @@ public class Results {
         }
     }
 
-    public boolean get(int number) {
+    public boolean get(long number) {
         synchronized (lock) {
             return primes.get(number).isPrime;
         }
