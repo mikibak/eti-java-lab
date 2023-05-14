@@ -1,41 +1,47 @@
 package org.example;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.Scanner;
+import java.io.*;
+import java.net.*;
 
-/**
- * This class implements java socket client
- * @author pankaj
- *
- */
-public class SocketClient {
 
-    public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException, InterruptedException{
-        //get the localhost IP address, if server is running on some other IP, you need to use that
-        InetAddress host = InetAddress.getLocalHost();
-        Socket socket = null;
-        ObjectOutputStream oos = null;
-        ObjectInputStream ois = null;
-        for(int i=0; i<5;i++){
-            //establish socket connection to server
-            socket = new Socket(host.getHostName(), 9876);
-            //write to socket using ObjectOutputStream
-            oos = new ObjectOutputStream(socket.getOutputStream());
-            System.out.println("Sending request to Socket Server");
-            if(i==4)oos.writeObject("exit");
-            else oos.writeObject(""+i);
-            //read the server response message
-            ois = new ObjectInputStream(socket.getInputStream());
-            String message = (String) ois.readObject();
-            System.out.println("Message: " + message);
-            //close resources
-            ois.close();
-            oos.close();
-            Thread.sleep(100);
+public class SocketClient
+{
+    public static void main(String[] args) throws IOException
+    {
+        try
+        {
+            Scanner ourNewscanner = new Scanner(System.in);
+            InetAddress inetadress = InetAddress.getByName("localhost");
+            // establishing the connection
+            Socket ournewsocket = new Socket(inetadress, 5056);
+            DataInputStream ournewDataInputstream = new DataInputStream(ournewsocket.getInputStream());
+            DataOutputStream ournewDataOutputstream = new DataOutputStream(ournewsocket.getOutputStream());
+            // In the following loop, the client and client handle exchange data.
+            while (true)
+            {
+                System.out.println(ournewDataInputstream.readUTF());
+                String tosend = ourNewscanner.nextLine();
+                ournewDataOutputstream.writeUTF(tosend);
+                // Exiting from a while loo should be done when a client gives an exit message.
+                if(tosend.equals("Exit"))
+                {
+                    System.out.println("Connection closing... : " + ournewsocket);
+                    ournewsocket.close();
+                    System.out.println("Closed");
+                    break;
+                }
+
+                // printing date or time as requested by client
+                String newresuiltReceivedString = ournewDataInputstream.readUTF();
+                System.out.println(newresuiltReceivedString);
+            }
+
+            ourNewscanner.close();
+            ournewDataInputstream.close();
+            ournewDataOutputstream.close();
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 }

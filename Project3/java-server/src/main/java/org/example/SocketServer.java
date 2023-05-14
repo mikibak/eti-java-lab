@@ -1,50 +1,42 @@
 package org.example;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.lang.ClassNotFoundException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import org.example.ClientHandler;
 
-/**
- * This class implements java Socket server
- * @author pankaj
- *
- */
-public class SocketServer {
+import java.io.*;
+import java.text.*;
+import java.util.*;
+import java.net.*;
+public class SocketServer
+{
+    public static void main(String[] args) throws IOException
+    {
+        ServerSocket myserverSocket = new ServerSocket(5056);
+        // getting client request
+        while (true)
+        // running infinite loop
+        {
+            Socket mynewSocket = null;
 
-    //static ServerSocket variable
-    private static ServerSocket server;
-    //socket server port on which it will listen
-    private static int port = 9876;
+            try
+            {
+                // mynewSocket object to receive incoming client requests
+                mynewSocket = myserverSocket.accept();
 
-    public static void main(String args[]) throws IOException, ClassNotFoundException{
-        //create the socket server object
-        server = new ServerSocket(port);
-        //keep listens indefinitely until receives 'exit' call or program terminates
-        while(true){
-            System.out.println("Waiting for the client request");
-            //creating socket and waiting for client connection
-            Socket socket = server.accept();
-            //read from socket to ObjectInputStream object
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            //convert ObjectInputStream object to String
-            String message = (String) ois.readObject();
-            System.out.println("Message Received: " + message);
-            //create ObjectOutputStream object
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            //write object to Socket
-            oos.writeObject("Hi Client "+message);
-            //close resources
-            ois.close();
-            oos.close();
-            socket.close();
-            //terminate the server if client sends exit request
-            if(message.equalsIgnoreCase("exit")) break;
+                System.out.println("A new connection identified : " + mynewSocket);
+                // obtaining input and out streams
+                DataInputStream ournewDataInputstream = new DataInputStream(mynewSocket.getInputStream());
+                DataOutputStream ournewDataOutputstream = new DataOutputStream(mynewSocket.getOutputStream());
+
+                System.out.println("Thread assigned");
+
+                // starting
+                Thread thread = new Thread(new ClientHandler(mynewSocket, ournewDataInputstream, ournewDataOutputstream));
+                thread.start();
+
+            }
+            catch (Exception e){
+                mynewSocket.close();
+                e.printStackTrace();
+            }
         }
-        System.out.println("Shutting down Socket server!!");
-        //close the ServerSocket object
-        server.close();
     }
-
 }
