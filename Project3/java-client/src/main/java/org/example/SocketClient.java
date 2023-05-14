@@ -9,6 +9,9 @@ public class SocketClient
 {
     public static void main(String[] args) throws IOException
     {
+        Messsage messsage = new Messsage();
+        String received;
+        int n = 5;
         try
         {
             Scanner ourNewscanner = new Scanner(System.in);
@@ -17,24 +20,31 @@ public class SocketClient
             Socket ournewsocket = new Socket(inetadress, 5056);
             DataInputStream ournewDataInputstream = new DataInputStream(ournewsocket.getInputStream());
             DataOutputStream ournewDataOutputstream = new DataOutputStream(ournewsocket.getOutputStream());
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(ournewsocket.getOutputStream());
+
+            while (true)
+            {
+                received = ournewDataInputstream.readUTF();
+                System.out.println(received);
+                if(received.equals("ready")) {
+                    System.out.println("Sending n");
+                    ournewDataOutputstream.writeUTF(String.valueOf(n));
+                    break;
+                }
+            }
+
             // In the following loop, the client and client handle exchange data.
             while (true)
             {
-                System.out.println(ournewDataInputstream.readUTF());
-                String tosend = ourNewscanner.nextLine();
-                ournewDataOutputstream.writeUTF(tosend);
-                // Exiting from a while loo should be done when a client gives an exit message.
-                if(tosend.equals("Exit"))
-                {
-                    System.out.println("Connection closing... : " + ournewsocket);
-                    ournewsocket.close();
-                    System.out.println("Closed");
+                received = ournewDataInputstream.readUTF();
+                System.out.println(received);
+                if(received.equals("ready for messages")) {
+                    for(int i = 0; i < n; i++) {
+                        System.out.println("Sending message " + i);
+                        objectOutputStream.writeObject(messsage);
+                    }
                     break;
                 }
-
-                // printing date or time as requested by client
-                String newresuiltReceivedString = ournewDataInputstream.readUTF();
-                System.out.println(newresuiltReceivedString);
             }
 
             ourNewscanner.close();

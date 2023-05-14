@@ -1,8 +1,6 @@
 package org.example;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -12,15 +10,17 @@ public class ClientHandler implements Runnable
 {
     final DataInputStream ournewDataInputstream;
     final DataOutputStream ournewDataOutputstream;
+    final ObjectInputStream objectInputStream;
     final Socket mynewSocket;
 
 
     // Constructor
-    public ClientHandler(Socket mynewSocket, DataInputStream ournewDataInputstream, DataOutputStream ournewDataOutputstream)
+    public ClientHandler(Socket mynewSocket, DataInputStream ournewDataInputstream, DataOutputStream ournewDataOutputstream, ObjectInputStream objectInputStream)
     {
         this.mynewSocket = mynewSocket;
         this.ournewDataInputstream = ournewDataInputstream;
         this.ournewDataOutputstream = ournewDataOutputstream;
+        this.objectInputStream = objectInputStream;
     }
 
     @Override
@@ -31,12 +31,16 @@ public class ClientHandler implements Runnable
         while (true)
         {
             try {
-                ournewDataOutputstream.writeUTF("Choose: [Date | Time]..\n"+
-                        "Or Exit");
+                ournewDataOutputstream.writeUTF("ready");
+                System.out.println("sending ready");
 
                 // getting answers from client
                 receivedString = ournewDataInputstream.readUTF();
 
+                int n = Integer.parseInt(receivedString);
+                ournewDataOutputstream.writeUTF("ready for messages");
+                System.out.println("sending ready for messages");
+/*
                 if(receivedString.equals("Exit"))
                 {
                     System.out.println("Client " + this.mynewSocket + " sends exit...");
@@ -44,25 +48,23 @@ public class ClientHandler implements Runnable
                     this.mynewSocket.close();
                     System.out.println("Closed");
                     break;
+                }*/
+
+                Messsage messages[] = new Messsage[n];
+
+                for(int i = 0; i < n; i++) {
+                    messages[i] =  (Messsage) objectInputStream.readObject();
+                    System.out.println("Content of message " + i + ": " + messages[i].getContent());
                 }
 
-
-                switch (receivedString) {
-
-                    case "Date" :
-                        ournewDataOutputstream.writeUTF("DUPA");
-                        break;
-
-                    case "Time" :
-                        ournewDataOutputstream.writeUTF("DU_A");
-                        break;
-
-                    default:
-                        ournewDataOutputstream.writeUTF("Invalid input");
-                        break;
-                }
+                ournewDataOutputstream.writeUTF("finished");
+                System.out.println("Connection closing...");
+                this.mynewSocket.close();
+                break;
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
 

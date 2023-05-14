@@ -25,11 +25,12 @@ public class SocketServer
                 // obtaining input and out streams
                 DataInputStream ournewDataInputstream = new DataInputStream(mynewSocket.getInputStream());
                 DataOutputStream ournewDataOutputstream = new DataOutputStream(mynewSocket.getOutputStream());
+                ObjectInputStream objectInputStream = new ObjectInputStream(mynewSocket.getInputStream());
 
                 System.out.println("Thread assigned");
 
                 // starting
-                Thread thread = new Thread(new ClientHandler(mynewSocket, ournewDataInputstream, ournewDataOutputstream));
+                Thread thread = new Thread(new ClientHandler(mynewSocket, ournewDataInputstream, ournewDataOutputstream, objectInputStream));
                 thread.start();
 
             }
