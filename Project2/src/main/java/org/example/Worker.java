@@ -13,13 +13,19 @@ public class Worker implements Runnable {
     }
     @Override
     public void run() {
+        boolean running = true;
         while(true) {
             try {
+                if (!running) {
+                    return;
+                }
                 task = resource.take();
                 if(task != null) {
                     results.add(task.resultHash(), task.execute());
                 }
-            } catch (InterruptedException ignored) {
+            } catch (InterruptedException e) {
+                running = false;
+                continue;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

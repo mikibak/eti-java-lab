@@ -2,11 +2,12 @@ package org.example;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
-    public static int N_OF_WORKERS = 5;
-    public static void main(String[] args) throws IOException {
+    public static int N_OF_WORKERS = 2;
+    public static void main(String[] args) throws IOException, InterruptedException {
         Resource resource = new Resource();
         DivisorCollectResults results = new DivisorCollectResults();
 
@@ -56,7 +57,7 @@ public class Main {
             // Reading data using readLine
             String string = reader.readLine();
 
-            if(string == "exit") break;
+            if(Objects.equals(string, "exit")) break;
 
             long number = getLongFromString(string);
 
@@ -66,12 +67,10 @@ public class Main {
             resource.put(task);
         }
 
-        try {
-            for(Thread thread : threads) {
-                thread.join();
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        for(Thread thread : threads) {
+            resource.clearTasks();
+            thread.interrupt();
+            System.out.println("Closed thread");
         }
     }
 

@@ -21,4 +21,8 @@ public class Resource {
         this.tasks.add(task);
         notifyAll();
     }
+
+    public void clearTasks() {
+        this.tasks.clear();
+    }
 }

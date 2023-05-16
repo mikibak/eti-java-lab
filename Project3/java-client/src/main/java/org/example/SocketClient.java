@@ -11,7 +11,7 @@ public class SocketClient
     {
         Messsage messsage = new Messsage();
         String received;
-        int n = 5;
+        int n = 10;
         try
         {
             Scanner ourNewscanner = new Scanner(System.in);

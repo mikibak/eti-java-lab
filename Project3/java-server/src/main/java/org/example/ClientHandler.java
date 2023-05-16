@@ -40,15 +40,6 @@ public class ClientHandler implements Runnable
                 int n = Integer.parseInt(receivedString);
                 ournewDataOutputstream.writeUTF("ready for messages");
                 System.out.println("sending ready for messages");
-/*
-                if(receivedString.equals("Exit"))
-                {
-                    System.out.println("Client " + this.mynewSocket + " sends exit...");
-                    System.out.println("Connection closing...");
-                    this.mynewSocket.close();
-                    System.out.println("Closed");
-                    break;
-                }*/
 
                 Messsage messages[] = new Messsage[n];
 
