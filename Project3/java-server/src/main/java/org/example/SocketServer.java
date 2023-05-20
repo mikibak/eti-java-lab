@@ -7,6 +7,7 @@ import java.util.*;
 import java.net.*;
 public class SocketServer
 {
+    public static List<Socket> sockets;
     public static void main(String[] args) throws IOException
     {
         ServerSocket myserverSocket = new ServerSocket(5056);
@@ -32,6 +33,7 @@ public class SocketServer
                 // starting
                 Thread thread = new Thread(new ClientHandler(mynewSocket, ournewDataInputstream, ournewDataOutputstream, objectInputStream));
                 thread.start();
+                sockets.add(mynewSocket);
 
             }
             catch (Exception e){

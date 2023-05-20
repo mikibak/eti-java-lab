@@ -31,31 +31,20 @@ public class ClientHandler implements Runnable
         while (true)
         {
             try {
-                ournewDataOutputstream.writeUTF("ready");
-                System.out.println("sending ready");
-
-                // getting answers from client
                 receivedString = ournewDataInputstream.readUTF();
-
-                int n = Integer.parseInt(receivedString);
-                ournewDataOutputstream.writeUTF("ready for messages");
-                System.out.println("sending ready for messages");
-
-                Messsage messages[] = new Messsage[n];
-
-                for(int i = 0; i < n; i++) {
-                    messages[i] =  (Messsage) objectInputStream.readObject();
-                    System.out.println("Content of message " + i + ": " + messages[i].getContent());
+                if(receivedString.equals("DROP DATABASE")) {
+                    break;
                 }
 
-                ournewDataOutputstream.writeUTF("finished");
-                System.out.println("Connection closing...");
-                this.mynewSocket.close();
-                break;
+                for(Socket socket : SocketServer.sockets) {
+                    if(socket != mynewSocket) {
+                        DataInputStream ournewDataInputstream = new DataInputStream(socket.getInputStream());
+                        DataOutputStream ournewDataOutputstream = new DataOutputStream(socket.getOutputStream());
+                        ournewDataOutputstream.writeUTF(receivedString);
+                    }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
             }
         }
 
