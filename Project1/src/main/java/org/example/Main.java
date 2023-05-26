@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
         String sorting = args[0];
@@ -18,8 +16,8 @@ public class Main {
         Mage[] mage = new Mage[10];
 
         mage[0] = new Mage("Severus", 38, 4.0, sorting);
-        mage[1] = new Mage("Tytus Pikies", 50, 5.0, sorting);
-        mage[2] = new Mage("Marek Kubale", 100, 10.0, sorting);
+        mage[1] = new Mage("dr Tytus Pikies", 50, 5.0, sorting);
+        mage[2] = new Mage("prof Marek Kubale", 100, 10.0, sorting);
         mage[3] = new Mage("Gandalf z \"Gandalf Sax Guy 10 Hours HD\"", 70, 10.5, sorting);
         mage[4] = new Mage("J'zargo", 65, 9.5, sorting);
         mage[5] = new Mage("Magik z Paktofoniki", 45, 4.5, sorting);
