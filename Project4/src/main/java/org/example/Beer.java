@@ -4,29 +4,29 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Piwo {
+public class Beer {
     @Id
     private String name;
     private long cena;
     @ManyToOne
-    private Browar browar;
+    private Brewery brewery;
 
-    public Piwo(String name, long cena, Browar browar) {
+    public Beer(String name, long cena, Brewery brewery) {
         this.name = name;
         this.cena = cena;
-        this.browar = browar;
+        this.brewery = brewery;
     }
 
-    public Piwo() {
+    public Beer() {
 
     }
 
     @Override
     public String toString() {
-        return "Name: " + name + " cena: " + cena + " browar: " + browar.getName();
+        return "Name: " + name + " cena: " + cena + " brewery: " + brewery.getName();
     }
 
-    public Browar getBrowar() {
-        return browar;
+    public Brewery getBrowar() {
+        return brewery;
     }
 }

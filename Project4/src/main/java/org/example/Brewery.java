@@ -9,20 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Browar {
+public class Brewery {
     @Id
     private String name;
     private long wartosc;
-    @OneToMany(mappedBy = "browar", cascade = CascadeType.REMOVE)
-    private List<Piwo> piwos;
+    @OneToMany(mappedBy = "brewery", cascade = CascadeType.REMOVE)
+    private List<Beer> beers;
 
-    public Browar(String name, long wartosc) {
+    public Brewery(String name, long wartosc) {
         this.name = name;
         this.wartosc = wartosc;
-        piwos = new ArrayList<>();
+        beers = new ArrayList<>();
     }
 
-    public Browar() {
+    public Brewery() {
         // Domyślny konstruktor bez argumentów
     }
 
@@ -31,10 +31,10 @@ public class Browar {
     }
 
     public String toString() {
-        return "Name: " + name + " wartosc: " + wartosc + " piwa: " + piwos;
+        return "Name: " + name + " wartosc: " + wartosc + " piwa: " + beers;
     }
 
-    public void addPiwo(Piwo piwo) {
-        piwos.add(piwo);
+    public void addPiwo(Beer beer) {
+        beers.add(beer);
     }
 }

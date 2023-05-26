@@ -45,10 +45,10 @@ public class Main {
                         scanner.nextLine();
                         String browarName = scanner.nextLine();
 
-                        Browar browar = (Browar)em.find(Browar.class, browarName);
+                        Brewery brewery = (Brewery)em.find(Brewery.class, browarName);
 
-                        Piwo piwo = new Piwo(name, cena, browar);
-                        db.add(piwo);
+                        Beer beer = new Beer(name, cena, brewery);
+                        db.add(beer);
                         break;
                     case 2:
                         db.deletePiwo(scanner.nextLine());
@@ -59,7 +59,7 @@ public class Main {
                         long cena1 = scanner.nextLong();
                         scanner.nextLine();
 
-                        db.add(new Browar(name1, cena1));
+                        db.add(new Brewery(name1, cena1));
                         break;
                     case 4:
                         db.deleteBrowar(scanner.nextLine());
@@ -69,17 +69,17 @@ public class Main {
                         break;
                     case 6:
                         long cena2 = scanner.nextLong();
-                        List<Browar> browaryTanie = db.getBrowarsWithCheaperThan(cena2);
+                        List<Brewery> browaryTanie = db.getBrowarsWithCheaperThan(cena2);
                         System.out.println("\nBrowary z tanimi piwami: ");
-                        for (Browar browarTani : browaryTanie) {
-                            System.out.println("Browar: " + browarTani.getName());
+                        for (Brewery breweryTani : browaryTanie) {
+                            System.out.println("Brewery: " + breweryTani.getName());
                         }
                         break;
                     case 7:
                         long cena3 = scanner.nextLong();
-                        List<Piwo> piwa = db.pobierzPiwaZCenaNizsza(em, cena3);
+                        List<Beer> piwa = db.pobierzPiwaZCenaNizsza(em, cena3);
                         System.out.println("\nTanie piwa: ");
-                        for (Piwo piiwo : piwa) {
+                        for (Beer piiwo : piwa) {
                             System.out.println(piiwo);
                         }
                         break;
@@ -87,9 +87,9 @@ public class Main {
                         String name8 = scanner.nextLine();
                         long cena8 = scanner.nextLong();
                         scanner.nextLine();
-                        List<Piwo> piwa4 = db.pobierzPiwaZCenaWiekszaDlaBrowaru(em, name8, cena8);
-                        for (Piwo piwo4 : piwa4) {
-                            System.out.println(piwo4);
+                        List<Beer> piwa4 = db.pobierzPiwaZCenaWiekszaDlaBrowaru(em, name8, cena8);
+                        for (Beer beer4 : piwa4) {
+                            System.out.println(beer4);
                         }
 
                         break;
@@ -105,31 +105,31 @@ public class Main {
     }
 
     private static void addStartingData(Model db) {
-        Browar browar1 = new Browar("browar w Elblągu", 27);
-        Browar browar2 = new Browar("Browar 2", 200);
-        Browar browar3 = new Browar("Browar 3", 135);
-        Browar browar4 = new Browar("Browar 4", 2465);
-        Browar browar5 = new Browar("Browar 5", 6542);
+        Brewery brewery1 = new Brewery("browar w Elblągu", 27);
+        Brewery brewery2 = new Brewery("Brewery 2", 200);
+        Brewery brewery3 = new Brewery("Brewery 3", 135);
+        Brewery brewery4 = new Brewery("Brewery 4", 2465);
+        Brewery brewery5 = new Brewery("Brewery 5", 6542);
 
-        Piwo piwo1 = new Piwo("Żubr", 300, browar1);
-        Piwo piwo2 = new Piwo("Kasztelan", 350, browar1);
-        Piwo piwo3 = new Piwo("Perła", 410, browar2);
-        Piwo piwo4 = new Piwo("Tyskie", 520, browar2);
-        Piwo piwo5 = new Piwo("Lech", 510, browar3);
-        Piwo piwo6 = new Piwo("Dębowe mocne", 210, browar4);
+        Beer beer1 = new Beer("Żubr", 300, brewery1);
+        Beer beer2 = new Beer("Kasztelan", 350, brewery1);
+        Beer beer3 = new Beer("Perła", 410, brewery2);
+        Beer beer4 = new Beer("Tyskie", 520, brewery2);
+        Beer beer5 = new Beer("Lech", 510, brewery3);
+        Beer beer6 = new Beer("Dębowe mocne", 210, brewery4);
 
 
-        db.add(browar1);
-        db.add(browar2);
-        db.add(browar3);
-        db.add(browar4);
-        db.add(browar5);
-        db.add(piwo1);
-        db.add(piwo2);
-        db.add(piwo3);
-        db.add(piwo4);
-        db.add(piwo5);
-        db.add(piwo6);
+        db.add(brewery1);
+        db.add(brewery2);
+        db.add(brewery3);
+        db.add(brewery4);
+        db.add(brewery5);
+        db.add(beer1);
+        db.add(beer2);
+        db.add(beer3);
+        db.add(beer4);
+        db.add(beer5);
+        db.add(beer6);
 
     }
 
