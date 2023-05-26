@@ -31,7 +31,7 @@ public class Brewery {
     }
 
     public String toString() {
-        return "Name: " + name + " wartosc: " + wartosc + " piwa: " + beers;
+        return "Nazwa: " + name + " wartosc: " + wartosc + " piwa: " + beers;
     }
 
     public void addPiwo(Beer beer) {

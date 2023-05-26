@@ -7,8 +7,6 @@ import jakarta.persistence.Persistence;
 import java.util.List;
 import java.util.Scanner;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
         try (EntityManagerFactory factory = Persistence.createEntityManagerFactory("rpgPu")) {
@@ -28,62 +26,64 @@ public class Main {
                 System.out.println("3. Dodaj browar");
                 System.out.println("4. Usuń browar");
                 System.out.println("5. Wyświetl");
-                System.out.println("6. Browary tanie");
-                System.out.println("7. Piwa tańsze niż");
-                System.out.println("8. Piwa droższe niż");
+                System.out.println("6. Browary z piwem tańszym niż..");
+                System.out.println("7. Piwa tańsze niż...");
+                System.out.println("8. Piwa droższe niż... w browarze...");
                 System.out.println("0. Wyjdź z programu");
 
                 int option = scanner.nextInt();
-                scanner.nextLine(); // Pobierz znak nowej linii po wprowadzeniu liczby
+                scanner.nextLine();
 
                 switch (option) {
-                    case 1:
+                    case 1 -> {
                         System.out.println("Nazwa [enter] cena [enter] nazwa browaru");
-
                         String name = scanner.nextLine();
-                        long cena = scanner.nextLong();
+                        long price = scanner.nextLong();
                         scanner.nextLine();
-                        String browarName = scanner.nextLine();
-
-                        Brewery brewery = (Brewery)em.find(Brewery.class, browarName);
-
-                        Beer beer = new Beer(name, cena, brewery);
-                        db.add(beer);
-                        break;
-                    case 2:
+                        Brewery brewery = db.getBrewery(scanner.nextLine());
+                        if (brewery != null) {
+                            Beer beer = new Beer(name, price, brewery);
+                            db.add(beer);
+                        }
+                    }
+                    case 2 -> {
+                        System.out.println("Nazwa [enter]");
                         db.deletePiwo(scanner.nextLine());
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         System.out.println("Nazwa [enter] wartosc");
                         String name1 = scanner.nextLine();
                         long cena1 = scanner.nextLong();
                         scanner.nextLine();
-
                         db.add(new Brewery(name1, cena1));
-                        break;
-                    case 4:
+                    }
+                    case 4 -> {
+                        System.out.println("Nazwa [enter]");
                         db.deleteBrowar(scanner.nextLine());
-                        break;
-                    case 5:
+                    }
+                    case 5 -> {
                         db.print();
-                        break;
-                    case 6:
+                    }
+                    case 6 -> {
+                        System.out.println("Cena [enter]");
                         long cena2 = scanner.nextLong();
                         List<Brewery> browaryTanie = db.getBrowarsWithCheaperThan(cena2);
                         System.out.println("\nBrowary z tanimi piwami: ");
                         for (Brewery breweryTani : browaryTanie) {
-                            System.out.println("Brewery: " + breweryTani.getName());
+                            System.out.println("Browar: " + breweryTani.getName());
                         }
-                        break;
-                    case 7:
+                    }
+                    case 7 -> {
+                        System.out.println("Cena [enter]");
                         long cena3 = scanner.nextLong();
                         List<Beer> piwa = db.pobierzPiwaZCenaNizsza(em, cena3);
                         System.out.println("\nTanie piwa: ");
                         for (Beer piiwo : piwa) {
                             System.out.println(piiwo);
                         }
-                        break;
-                    case 8:
+                    }
+                    case 8 -> {
+                        System.out.println("Nazwa [enter] cena");
                         String name8 = scanner.nextLine();
                         long cena8 = scanner.nextLong();
                         scanner.nextLine();
@@ -91,13 +91,11 @@ public class Main {
                         for (Beer beer4 : piwa4) {
                             System.out.println(beer4);
                         }
-
-                        break;
-                    case 0:
+                    }
+                    case 0 -> {
                         running = false;
-                        break;
-                    default:
-                        System.out.println("Nieprawidłowa opcja. Wybierz ponownie.");
+                    }
+                    default -> System.out.println("Nieprawidłowa opcja. Wybierz ponownie.");
                 }
             }
             em.close();

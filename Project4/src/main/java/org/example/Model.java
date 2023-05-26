@@ -54,7 +54,7 @@ public class Model {
         Beer beer = em.find(Beer.class, piwoName);
         if (beer != null) {
             em.remove(beer);
-            System.out.println("Beer zostało usunięte.");
+            System.out.println("Piwo zostało usunięte.");
         } else {
             System.out.println("Nie znaleziono piwa o podanej nazwie.");
         }
@@ -69,7 +69,7 @@ public class Model {
         Brewery brewery = em.find(Brewery.class, browarName);
         if (brewery != null) {
             em.remove(brewery);
-            System.out.println("Brewery został usunięty.");
+            System.out.println("Browar został usunięty.");
         } else {
             System.out.println("Nie znaleziono browaru o podanej nazwie.");
         }
@@ -79,37 +79,45 @@ public class Model {
         em.getTransaction().commit();
     }
 
+    public Brewery getBrewery(String name) {
+        Brewery brewery = (Brewery)em.find(Brewery.class, name);
+        if(brewery == null) {
+            System.out.println("Nie ma takiego browaru!");
+        }
+        return brewery;
+    }
+
     public List<Brewery> getBrowarsWithCheaperThan(long price) {
-        String query = "SELECT b FROM Brewery b JOIN b.piwos p WHERE p.cena < :maxPrice";
+        String query = "SELECT b FROM Brewery b JOIN b.piwos p WHERE p.price < :maxPrice";
         TypedQuery<Brewery> typedQuery = em.createQuery(query, Brewery.class);
         typedQuery.setParameter("maxPrice", price);
 
         return typedQuery.getResultList();
     }
 
-    public List<Beer> pobierzPiwaZCenaNizsza(EntityManager em, long cena) {
+    public List<Beer> pobierzPiwaZCenaNizsza(EntityManager em, long price) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Beer> query = cb.createQuery(Beer.class);
         Root<Beer> piwoRoot = query.from(Beer.class);
 
         query.select(piwoRoot)
-                .where(cb.lt(piwoRoot.get("cena"), cena));
+                .where(cb.lt(piwoRoot.get("price"), price));
 
         TypedQuery<Beer> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
     }
 
-    public List<Beer> pobierzPiwaZCenaWiekszaDlaBrowaru(EntityManager em, String browarName, long cena) {
+    public List<Beer> pobierzPiwaZCenaWiekszaDlaBrowaru(EntityManager em, String browarName, long price) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Beer> query = cb.createQuery(Beer.class);
         Root<Beer> piwoRoot = query.from(Beer.class);
 
-        Join<Beer, Brewery> browarJoin = piwoRoot.join("browar");
+        Join<Beer, Brewery> browarJoin = piwoRoot.join("brewery");
 
         query.select(piwoRoot)
                 .where(cb.and(
                         cb.equal(browarJoin.get("name"), browarName),
-                        cb.gt(piwoRoot.get("cena"), cena)
+                        cb.gt(piwoRoot.get("cena"), price)
                 ));
 
         TypedQuery<Beer> typedQuery = em.createQuery(query);
