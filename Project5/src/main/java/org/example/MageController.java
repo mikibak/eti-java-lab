@@ -5,7 +5,7 @@ import java.util.Optional;
 public class MageController {
     private MageRepository repository;
     public MageController(MageRepository repository) {
-
+        this.repository = repository;
     }
     public String find(String name) {
         Optional<Mage> mage = repository.find(name);
