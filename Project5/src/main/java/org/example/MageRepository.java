@@ -6,6 +6,10 @@ import java.util.Optional;
 
 public class MageRepository {
     private Collection<Mage> collection;
+
+    public MageRepository(Collection<Mage> collection) {
+        this.collection = collection;
+    }
     public Optional<Mage> find(String name) {
         for(Mage mage : collection) {
             if(Objects.equals(mage.getName(), name)) {
