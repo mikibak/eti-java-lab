@@ -12,7 +12,7 @@ public class MageController {
         if(mage.isEmpty()) {
             return "not found";
         } else {
-            return mage.toString();
+            return mage.get().toString();
         }
     }
     public String delete(String name) {

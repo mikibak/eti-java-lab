@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class MageRepositoryTest {
     @Test
-    public void find() {
+    public void findTest() {
         Collection<Mage> collection = new ArrayList<>();
         collection.add(new Mage("Mamasz Dziubale", 80));
         MageRepository mageRepository = new MageRepository(collection);
@@ -27,7 +27,7 @@ public class MageRepositoryTest {
         assertTrue(nullMage.isEmpty());
     }
     @Test
-    public void delete() {
+    public void deleteTest() {
         Collection<Mage> collection = new ArrayList<>();
         collection.add(new Mage("Mamasz Dziubale", 80));
         MageRepository mageRepository = new MageRepository(collection);
@@ -42,7 +42,7 @@ public class MageRepositoryTest {
         );
     }
     @Test
-    public void save() {
+    public void saveTest() {
         MageRepository mageRepository = new MageRepository(new ArrayList<>());
         assertDoesNotThrow(
                 () -> mageRepository.save(new Mage("Mamasz Dziubale", 100))
