@@ -42,15 +42,23 @@ public class Main {
         long startTime = System.nanoTime();
         try(ForkJoinPool forkJoinPool = new ForkJoinPool(threadPoolSize)) {
             imageFiles.parallelStream()
+                    .map(file -> {
+                        MyFile myFile = new MyFile();
+                        try {
+                            myFile.bufferedImage = ImageIO.read(file);
+                            myFile.path = getOutputFilePath(file, saveToPath);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        return  myFile;
+                    })
                     .forEach(file -> {
                         try {
                             forkJoinPool.submit(() -> {
                                 try {
-                                    System.out.println("Przetwarzam obrazek: " + file.getName());
-                                    BufferedImage original = ImageIO.read(file);
-                                    BufferedImage modified = modifyImage(original);
-                                    String outputFilePath = getOutputFilePath(file, saveToPath);
-                                    ImageIO.write(modified, "jpg", new File(outputFilePath));
+                                    System.out.println("Przetwarzam obrazek: " + file.path);
+                                    BufferedImage modified = modifyImage(file.bufferedImage);
+                                    ImageIO.write(modified, "jpg", new File(file.path));
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
