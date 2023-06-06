@@ -10,14 +10,22 @@ import static org.mockito.Mockito.*;
 
 public class MageControllerTest {
     @Test
-    public void findTest() {
+    public void Should_ReturnMageString_WhenMageInRepository() {
         MageRepository mageRepository = mock(MageRepository.class);
         Mage mamaszDziubale = new Mage("Mamasz Dziubale", 80);
         when(mageRepository.find("Mamasz Dziubale")).thenReturn(Optional.of(mamaszDziubale));
-        when(mageRepository.find("Magik z Paktofoniki")).thenReturn(Optional.empty());
         MageController mageController = new MageController(mageRepository);
 
         assertEquals(mamaszDziubale.toString(), mageController.find("Mamasz Dziubale"));
+    }
+
+    @Test
+    public void Should_ReturnNotFound_WhenMageNotInRepository() {
+        MageRepository mageRepository = mock(MageRepository.class);
+        Mage mamaszDziubale = new Mage("Mamasz Dziubale", 80);
+        when(mageRepository.find("Magik z Paktofoniki")).thenReturn(Optional.empty());
+        MageController mageController = new MageController(mageRepository);
+
         assertEquals("not found", mageController.find("Magik z Paktofoniki"));
     }
     @Test

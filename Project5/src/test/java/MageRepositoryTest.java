@@ -14,17 +14,32 @@ import java.util.Optional;
 
 public class MageRepositoryTest {
     @Test
-    public void findTest() {
+    public void Should_ReturnOptionalMage_WhenMageInRepository() {
         Collection<Mage> collection = new ArrayList<>();
         collection.add(new Mage("Mamasz Dziubale", 80));
         MageRepository mageRepository = new MageRepository(collection);
 
         Optional<Mage> mage = mageRepository.find("Mamasz Dziubale");
         assertTrue(mage.isPresent());
-        assertEquals(mage.get().getLevel(), 80);
+    }
+
+    @Test
+    public void Should_ReturnEmptyOptional_WhenMageNotInRepository() {
+        Collection<Mage> collection = new ArrayList<>();
+        MageRepository mageRepository = new MageRepository(collection);
 
         Optional<Mage> nullMage = mageRepository.find("Magik z Paktofoniki");
         assertTrue(nullMage.isEmpty());
+    }
+
+    @Test
+    public void Should_ReturnCorrectOptionalMage_WhenMageInRepository() {
+        Collection<Mage> collection = new ArrayList<>();
+        collection.add(new Mage("Mamasz Dziubale", 80));
+        MageRepository mageRepository = new MageRepository(collection);
+
+        Optional<Mage> mage = mageRepository.find("Mamasz Dziubale");
+        assertEquals(mage.get().getLevel(), 80);
     }
     @Test
     public void deleteTest() {
