@@ -1,4 +1,4 @@
-# eti-java-lab
+# eti-java-projects
 
 There are six projects in this repository, each one is made to practice a different tool in Java:
 
